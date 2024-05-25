@@ -30,6 +30,10 @@ extension Date{
         DateFormatter.localizedString(from: self.toUTCDate(), dateStyle: .medium, timeStyle: .none)
     }
     
+    public func simpleDateString() -> String{
+            DateFormats.simpleDateFormatter.string(from: self)
+        }
+    
     public func dateTimeString() -> String{
         return DateFormatter.localizedString(from: self.toUTCDate(), dateStyle: .medium, timeStyle: .short)
     }
@@ -84,6 +88,13 @@ class DateFormats{
         dateFormatter.timeStyle = .medium
         return dateFormatter
     }
+    
+    public static var simpleDateFormatter : DateFormatter{
+            let dateFormatter = DateFormatter()
+            dateFormatter.timeZone = .none
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            return dateFormatter
+        }
     
     public static var fileDateFormatter : DateFormatter{
         let dateFormatter = DateFormatter()
