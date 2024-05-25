@@ -40,6 +40,14 @@ extension String {
         return String(format: self.localize(), param1, param2)
     }
     
+    public func localizeAsMandatory() -> String{
+        return String(format: NSLocalizedString(self,comment: "")) + " *"
+    }
+    
+    public func localizeWithColonAsMandatory() -> String{
+        return localize() + ":* "
+    }
+
     public func trim() -> String{
         return trimmingCharacters(in: .whitespacesAndNewlines)
     }
