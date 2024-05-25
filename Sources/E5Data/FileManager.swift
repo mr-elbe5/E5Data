@@ -184,4 +184,8 @@ extension FileManager {
         return count
     }
     
+    public func deleteTemporaryFiles() -> Int{
+        deleteAllFiles(dirURL: temporaryDirectory)
+    }
+    
 }
