@@ -44,6 +44,10 @@ extension String {
         return String(format: NSLocalizedString(self,comment: "")) + " *"
     }
     
+    public func localizeWithColon() -> String{
+        return localize() + ": "
+    }
+    
     public func localizeWithColonAsMandatory() -> String{
         return localize() + ":* "
     }
