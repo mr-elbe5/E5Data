@@ -34,6 +34,12 @@ extension Array{
         })
     }
     
+    public func containsEqual(_ obj: UUIDObject) -> Bool{
+        self.contains(where: {
+            ($0 as? UUIDObject)?.equals(obj) ?? false
+        })
+    }
+    
     public var allSelected: Bool{
         get{
             allSatisfy({
