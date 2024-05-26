@@ -13,7 +13,7 @@ extension FileManager {
     public static var documentURL : URL = FileManager.default.urls(for: .documentDirectory,in: FileManager.SearchPathDomainMask.userDomainMask).first!
     public static var imageLibraryURL : URL = FileManager.default.urls(for: .picturesDirectory,in: FileManager.SearchPathDomainMask.userDomainMask).first!
     
-    static func initializePrivateDir() {
+    public static func initializePrivateDir() {
         try! FileManager.default.createDirectory(at: privateURL, withIntermediateDirectories: true, attributes: nil)
     }
     
