@@ -8,8 +8,7 @@ import Foundation
 
 extension FileManager {
     
-    public static let tempDir = NSTemporaryDirectory()
-    public static let tempURL = URL(string: tempDir)!
+    public static let tempURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
     public static let privateURL : URL = FileManager.default.urls(for: .applicationSupportDirectory,in: FileManager.SearchPathDomainMask.userDomainMask).first!
     public static let documentURL : URL = FileManager.default.urls(for: .documentDirectory,in: FileManager.SearchPathDomainMask.userDomainMask).first!
     public static let imageLibraryURL : URL = FileManager.default.urls(for: .picturesDirectory,in: FileManager.SearchPathDomainMask.userDomainMask).first!
