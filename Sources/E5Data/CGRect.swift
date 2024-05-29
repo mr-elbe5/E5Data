@@ -8,6 +8,10 @@ import Foundation
 
 extension CGRect{
     
+    public var center: CGPoint{
+        CGPoint(x: origin.x + size.width/2, y: origin.y + size.height/2)
+    }
+    
     public func scaleBy(_ scale: CGFloat) -> CGRect{
         CGRect(origin: CGPoint(x: origin.x*scale, y: origin.y*scale), size: CGSize(width: size.width*scale, height: size.height*scale))
     }
