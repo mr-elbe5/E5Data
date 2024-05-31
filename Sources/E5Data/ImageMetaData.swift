@@ -53,6 +53,11 @@ open class ImageMetaData: NSObject, Codable {
         }
     }
     
+    public init(data: Data) {
+        super.init()
+        self.readData(data: data as CFData)
+    }
+    
     required public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         width = try values.decodeIfPresent(Int.self, forKey: .width) ?? 0
