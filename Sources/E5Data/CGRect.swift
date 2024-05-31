@@ -1,6 +1,6 @@
 /*
- Maps For OSM
- App for display and use of OSM maps without MapKit
+ E5Data
+ Base classes and extension for IOS and MacOS
  Copyright: Michael Rönnau mr@elbe5.de
  */
 

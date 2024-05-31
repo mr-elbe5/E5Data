@@ -1,7 +1,7 @@
 /*
- Construction Defect Tracker
- App for tracking construction defects
- Copyright: Michael Rönnau mr@elbe5.de 2023
+ E5Data
+ Base classes and extension for IOS and MacOS
+ Copyright: Michael Rönnau mr@elbe5.de
  */
 
 import Foundation
