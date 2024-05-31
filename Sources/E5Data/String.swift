@@ -74,5 +74,27 @@ extension String {
     public func appendingPathComponent(_ pathComponent: String) -> String{
         self + "/" + pathComponent
     }
+    
+    func lastPathComponent() -> String{
+        if var pos = lastIndex(of: "/")    {
+            pos = index(after: pos)
+            return String(self[pos..<endIndex])
+        }
+        return self
+    }
+
+    func pathExtension() -> String {
+        if let idx = index(of: ".", from: startIndex) {
+            return String(self[index(after: idx)..<endIndex])
+        }
+        return self
+    }
+
+    func pathWithoutExtension() -> String {
+        if let idx = index(of: ".", from: startIndex) {
+            return String(self[startIndex..<idx])
+        }
+        return self
+    }
 
 }
