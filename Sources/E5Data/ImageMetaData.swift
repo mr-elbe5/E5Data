@@ -20,8 +20,6 @@ open class ImageMetaData: NSObject, Codable {
     }
     
     public enum CodingKeys: String, CodingKey {
-        case url
-        case utType
         case width
         case height
         case orientation
@@ -33,12 +31,8 @@ open class ImageMetaData: NSObject, Codable {
         case altitude
         case latitude
         case longitude
-        case latitudeRef
-        case longitudeRef
     }
     
-    public var url: URL
-    public var utType: UTType
     public var width: Int = 0
     public var height: Int = 0
     public var orientation: Int = 0
@@ -50,22 +44,16 @@ open class ImageMetaData: NSObject, Codable {
     public var altitude: Double?
     public var latitude: Double?
     public var longitude: Double?
-    public var latitudeRef: String?
-    public var longitudeRef: String?
     
     public init(url: URL) {
-        self.url = url
-        self.utType = url.utType ?? .url
         super.init()
         if let data = NSData(contentsOf: url) {
-            self.setExifData(data: data)
+            self.readData(data: data)
         }
     }
     
     required public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        url = try values.decode(URL.self, forKey: .url)
-        utType = try values.decodeIfPresent(UTType.self, forKey: .utType) ?? url.utType ?? .url
         width = try values.decodeIfPresent(Int.self, forKey: .width) ?? 0
         height = try values.decodeIfPresent(Int.self, forKey: .height) ?? 0
         orientation = try values.decodeIfPresent(Int.self, forKey: .orientation) ?? 0
@@ -77,14 +65,10 @@ open class ImageMetaData: NSObject, Codable {
         altitude = try values.decodeIfPresent(Double.self, forKey: .altitude)
         latitude = try values.decodeIfPresent(Double.self, forKey: .latitude)
         longitude = try values.decodeIfPresent(Double.self, forKey: .longitude)
-        latitudeRef = try values.decodeIfPresent(String.self, forKey: .latitudeRef)
-        longitudeRef = try values.decodeIfPresent(String.self, forKey: .longitudeRef)
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(url, forKey: .url)
-        try container.encode(utType, forKey: .utType)
         try container.encode(width, forKey: .width)
         try container.encode(height, forKey: .height)
         try container.encode(orientation, forKey: .orientation)
@@ -96,14 +80,10 @@ open class ImageMetaData: NSObject, Codable {
         try container.encode(altitude, forKey: .altitude)
         try container.encode(latitude, forKey: .latitude)
         try container.encode(longitude, forKey: .longitude)
-        try container.encode(latitudeRef, forKey: .latitudeRef)
-        try container.encode(longitudeRef, forKey: .longitudeRef)
     }
    
     private var dictionary: [String: Any] {
         return [
-            "url" : url,
-            "utType" : utType,
             "width": width,
             "height": height,
             "orientation": orientation,
@@ -115,8 +95,6 @@ open class ImageMetaData: NSObject, Codable {
             "altitude": altitude as Any,
             "latitude": latitude as Any,
             "longitude": longitude as Any,
-            "latitudeRef": latitudeRef as Any,
-            "longitudeRef": longitudeRef as Any,
         ]
     }
     
@@ -124,7 +102,7 @@ open class ImageMetaData: NSObject, Codable {
         return dictionary as NSDictionary
     }
     
-    private func setExifData(data: CFData) {
+    private func readData(data: CFData) {
         let options = [kCGImageSourceShouldCache as String: kCFBooleanFalse]
         
         if let imgSrc = CGImageSourceCreateWithData(data, options as CFDictionary) {
@@ -145,8 +123,6 @@ open class ImageMetaData: NSObject, Codable {
                     self.altitude = gpsData[kCGImagePropertyGPSAltitude] as? Double
                     self.latitude = gpsData[kCGImagePropertyGPSLatitude] as? Double
                     self.longitude = gpsData[kCGImagePropertyGPSLongitude] as? Double
-                    self.latitudeRef = gpsData[kCGImagePropertyGPSLatitudeRef] as? String
-                    self.longitudeRef = gpsData[kCGImagePropertyGPSLongitudeRef] as? String
                 }
             }
         }
