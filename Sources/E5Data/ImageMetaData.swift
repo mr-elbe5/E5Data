@@ -7,6 +7,7 @@
 import Foundation
 import ImageIO
 import UniformTypeIdentifiers
+import CoreLocation
 
 open class ImageMetaData: NSObject, Codable {
     
@@ -100,6 +101,13 @@ open class ImageMetaData: NSObject, Codable {
     
     public var toDictionary: NSDictionary {
         return dictionary as NSDictionary
+    }
+    
+    public var coordinate: CLLocationCoordinate2D?{
+        if let latitude = latitude, let longitude = longitude{
+            return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        }
+        return nil
     }
     
     private func readData(data: CFData) {
