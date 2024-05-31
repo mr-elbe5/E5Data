@@ -75,7 +75,7 @@ extension String {
         self + "/" + pathComponent
     }
     
-    func lastPathComponent() -> String{
+    public func lastPathComponent() -> String{
         if var pos = lastIndex(of: "/")    {
             pos = index(after: pos)
             return String(self[pos..<endIndex])
@@ -83,14 +83,14 @@ extension String {
         return self
     }
 
-    func pathExtension() -> String {
+    public func pathExtension() -> String {
         if let idx = index(of: ".", from: startIndex) {
             return String(self[index(after: idx)..<endIndex])
         }
         return self
     }
 
-    func pathWithoutExtension() -> String {
+    public func pathWithoutExtension() -> String {
         if let idx = index(of: ".", from: startIndex) {
             return String(self[startIndex..<idx])
         }
