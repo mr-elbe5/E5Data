@@ -11,15 +11,6 @@ import CoreLocation
 
 open class ImageMetaData: NSObject, Codable {
     
-    public static var exifDateFormatter : DateFormatter{
-        get{
-            let dateFormatter = DateFormatter()
-            dateFormatter.timeZone = .none
-            dateFormatter.dateFormat = "yyyy:MM:dd HH:mm:ss"
-            return dateFormatter
-        }
-    }
-    
     public enum CodingKeys: String, CodingKey {
         case width
         case height
@@ -128,7 +119,7 @@ open class ImageMetaData: NSObject, Codable {
         if let exifData = dict[kCGImagePropertyExifDictionary] as? NSDictionary {
             self.aperture = exifData[kCGImagePropertyExifApertureValue] as? String
             self.brightness = exifData[kCGImagePropertyExifBrightnessValue] as? String
-            self.dateTime = ImageMetaData.exifDateFormatter.date(from: exifData[kCGImagePropertyExifDateTimeOriginal] as? String ?? "")
+            self.dateTime = DateFormats.exifDateFormatter.date(from: exifData[kCGImagePropertyExifDateTimeOriginal] as? String ?? "")
             self.offsetTime = exifData[kCGImagePropertyExifOffsetTime] as? String
         }
         if let gpsData = dict[kCGImagePropertyGPSDictionary] as? NSDictionary {
@@ -138,7 +129,7 @@ open class ImageMetaData: NSObject, Codable {
         }
     }
     
-    public func writeDictionary(dict: NSMutableDictionary) {
+    public func modifyDictionary(dict: NSMutableDictionary) {
         if let width = width{
             dict[kCGImagePropertyPixelWidth] = width
         }
@@ -172,7 +163,7 @@ open class ImageMetaData: NSObject, Codable {
                 exifDict[kCGImagePropertyExifBrightnessValue] = brightness
             }
             if let dateTime = dateTime{
-                exifDict[kCGImagePropertyExifDateTimeOriginal] = ImageMetaData.exifDateFormatter.string(for: dateTime)
+                exifDict[kCGImagePropertyExifDateTimeOriginal] = DateFormats.exifDateFormatter.string(for: dateTime)
             }
             if let offsetTime = offsetTime{
                 exifDict[kCGImagePropertyExifOffsetTime] = offsetTime
@@ -197,48 +188,6 @@ open class ImageMetaData: NSObject, Codable {
                 gpsDict[kCGImagePropertyExifOffsetTime] = longitude
             }
         }
-    }
-    
-    public func getImageSource(data: Data) -> CGImageSource?{
-        CGImageSourceCreateWithData(data as CFData,  nil)
-    }
-    
-    public func readSourceProperties(source: CGImageSource) -> NSMutableDictionary{
-        let srcProperties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil)! as NSDictionary
-        readDictionary(dict: srcProperties)
-        return srcProperties.mutableCopy() as! NSMutableDictionary
-    }
-    
-    public func createImageDestination(src: CGImageSource, destProperties: NSMutableDictionary, utType: UTType) -> Data?{
-        if let destData = CFDataCreateMutable(.none, 0), let dest: CGImageDestination = CGImageDestinationCreateWithData(destData, utType.identifier as CFString, 1, nil){
-            CGImageDestinationAddImageFromSource(dest, src, 0, destProperties)
-            CGImageDestinationFinalize(dest)
-            return destData as Data
-        }
-        return nil
-    }
-    
-    public func getDataWithCoordinate(from data: Data, coordinate: CLLocationCoordinate2D, utType: UTType) -> Data?{
-        if let src = getImageSource(data: data){
-            let properties = readSourceProperties(source: src)
-            self.longitude = coordinate.longitude
-            self.latitude = coordinate.latitude
-            writeDictionary(dict: properties)
-            return createImageDestination(src: src, destProperties: properties, utType: utType)
-        }
-        return nil
-    }
-    
-    public func getDataWithLocation(from data: Data, location: CLLocation, utType: UTType) -> Data?{
-        if let src = getImageSource(data: data){
-            let properties = readSourceProperties(source: src)
-            self.longitude = location.coordinate.longitude
-            self.latitude = location.coordinate.latitude
-            self.altitude = location.altitude
-            writeDictionary(dict: properties)
-            return createImageDestination(src: src, destProperties: properties, utType: utType)
-        }
-        return nil
     }
     
 }

@@ -74,10 +74,15 @@ extension Date{
     public var millisecondsSince1970:Int64 {
         return Int64((self.timeIntervalSince1970 * 1000.0).rounded())
     }
+    
+    public var exifString : String{
+        DateFormats.exifDateFormatter.string(from: self)
+    }
 
     public init(milliseconds:Int) {
         self = Date(timeIntervalSince1970: TimeInterval(milliseconds / 1000))
     }
+
 }
 
 class DateFormats{
@@ -113,6 +118,13 @@ class DateFormats{
     public static var isoFormatter : ISO8601DateFormatter{
         let dateFormatter = ISO8601DateFormatter()
         dateFormatter.formatOptions = [.withFullDate, .withFullTime, .withDashSeparatorInDate, .withColonSeparatorInTime]
+        return dateFormatter
+    }
+    
+    public static var exifDateFormatter : DateFormatter{
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = .none
+        dateFormatter.dateFormat = "yyyy:MM:dd HH:mm:ss"
         return dateFormatter
     }
     
