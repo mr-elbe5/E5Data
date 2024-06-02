@@ -46,16 +46,8 @@ open class ImageMetaData: NSObject, Codable {
     public var latitude: Double?
     public var longitude: Double?
     
-    public init(url: URL) {
+    override public init() {
         super.init()
-        if let data = NSData(contentsOf: url) {
-            self.readData(data: data as Data)
-        }
-    }
-    
-    public init(data: Data) {
-        super.init()
-        self.readData(data: data as CFData)
     }
     
     required public init(from decoder: Decoder) throws {
