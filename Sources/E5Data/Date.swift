@@ -128,5 +128,19 @@ class DateFormats{
         return dateFormatter
     }
     
+    public static var iptcDateFormatter : DateFormatter{
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = .none
+        dateFormatter.dateFormat = "yyyyMMdd"
+        return dateFormatter
+    }
+    
+    public static var iptcTimeFormatter : DateFormatter{
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = .none
+        dateFormatter.dateFormat = "HHmmss"
+        return dateFormatter
+    }
+    
 }
 

@@ -29,8 +29,21 @@ extension Data{
                     exifProperties = NSMutableDictionary()
                     properties[kCGImagePropertyExifDictionary] = exifProperties
                 }
+                var iptcProperties: NSMutableDictionary
+                if let  currentIptcProperties = properties.value(forKey: kCGImagePropertyIPTCDictionary as String) as? NSMutableDictionary{
+                    iptcProperties = currentIptcProperties
+                }
+                else{
+                    iptcProperties = NSMutableDictionary()
+                    properties[kCGImagePropertyIPTCDictionary] = iptcProperties
+                }
                 if let dateTime = dateTime{
                     exifProperties[kCGImagePropertyExifDateTimeOriginal] = DateFormats.exifDateFormatter.string(for: dateTime)
+                    exifProperties[kCGImagePropertyExifDateTimeDigitized] = DateFormats.exifDateFormatter.string(for: dateTime)
+                    iptcProperties[kCGImagePropertyIPTCDateCreated] = DateFormats.iptcDateFormatter.string(for: dateTime)
+                    iptcProperties[kCGImagePropertyIPTCTimeCreated] = DateFormats.iptcTimeFormatter.string(for: dateTime)
+                    iptcProperties[kCGImagePropertyIPTCDigitalCreationDate] = DateFormats.iptcDateFormatter.string(for: dateTime)
+                    iptcProperties[kCGImagePropertyIPTCDigitalCreationTime] = DateFormats.iptcTimeFormatter.string(for: dateTime)
                 }
                 if let offsetTime = offsetTime{
                     exifProperties[kCGImagePropertyExifOffsetTime] = offsetTime
@@ -46,13 +59,18 @@ extension Data{
                     properties[kCGImagePropertyGPSDictionary] = gpsProperties
                 }
                 if let altitude = altitude{
-                    gpsProperties[kCGImagePropertyExifApertureValue] = altitude
+                    gpsProperties[kCGImagePropertyGPSAltitude] = altitude
                 }
                 if let latitude = latitude{
-                    gpsProperties[kCGImagePropertyExifBrightnessValue] = latitude
+                    gpsProperties[kCGImagePropertyGPSLatitude] = latitude
+                    gpsProperties[kCGImagePropertyGPSLatitudeRef] = latitude < 0 ? "S" : "N"
                 }
-                if let longitude = longitude{
-                    gpsProperties[kCGImagePropertyExifOffsetTime] = longitude
+                if var longitude = longitude{
+                    if longitude > 180{
+                        longitude -= 360
+                    }
+                    gpsProperties[kCGImagePropertyGPSLongitude] = abs(longitude)
+                    gpsProperties[kCGImagePropertyGPSLongitudeRef] = longitude < 0 ? "W" : "E"
                 }
             }
             CGImageDestinationAddImageFromSource(dest, src, 0, properties)
