@@ -79,7 +79,7 @@ open class ImageMetaData: NSObject, Codable {
             kCGImagePropertyExifDictionary : [
                 kCGImagePropertyExifApertureValue: aperture as Any,
                 kCGImagePropertyExifBrightnessValue: brightness as Any,
-                kCGImagePropertyExifApertureValue: dateTime as Any,
+                kCGImagePropertyExifDateTimeOriginal: dateTime as Any,
                 kCGImagePropertyExifOffsetTime: offsetTime as Any
             ],
             kCGImagePropertyTIFFDictionary : [
