@@ -37,6 +37,10 @@ open class ImageMetaData: NSObject, Codable {
     public var latitude: Double?
     public var longitude: Double?
     
+    public var hasGPSData: Bool{
+        latitude != nil && longitude != nil
+    }
+    
     override public init() {
         super.init()
     }
