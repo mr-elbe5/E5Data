@@ -85,7 +85,7 @@ extension Date{
 
 }
 
-class DateFormats{
+public class DateFormats{
     
     public static var timestampFormatter : DateFormatter{
         let dateFormatter = DateFormatter()
