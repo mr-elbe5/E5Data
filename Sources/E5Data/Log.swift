@@ -6,6 +6,10 @@
 
 import Foundation
 
+public protocol LogDelegate{
+    func newLog(log: String)
+}
+
 public class Log{
     
     public enum LogLevel: Int{
@@ -20,13 +24,17 @@ public class Log{
     
     public static var useCache = false
     
-    public static var logLevel: LogLevel = .error
+    public static var logLevel: LogLevel = .info
+    
+    public static var delegate: LogDelegate? = nil
     
     private static func log(_ str: String){
-        print(str)
+        let logStr = "\(Date().dateTimeString())\n \(str)"
+        print(logStr)
         if useCache{
-            cache.append(str)
+            cache.append(logStr)
         }
+        delegate?.newLog(log: logStr)
     }
 
     public static func debug(_ msg: String){
