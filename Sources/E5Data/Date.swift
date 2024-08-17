@@ -38,6 +38,10 @@ extension Date{
         return DateFormatter.localizedString(from: self.toUTCDate(), dateStyle: .medium, timeStyle: .short)
     }
     
+    public func longDateTimeString() -> String{
+        return DateFormatter.localizedString(from: self.toUTCDate(), dateStyle: .medium, timeStyle: .medium)
+    }
+    
     public func timeString() -> String{
         return DateFormatter.localizedString(from: self.toUTCDate(), dateStyle: .none, timeStyle: .short)
     }

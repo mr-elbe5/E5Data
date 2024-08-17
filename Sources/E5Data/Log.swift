@@ -29,7 +29,7 @@ public class Log{
     public static var delegate: LogDelegate? = nil
     
     private static func log(_ str: String){
-        let logStr = "\(Date().dateTimeString())\n \(str)"
+        let logStr = "\(Date().longDateTimeString())\n \(str)"
         print(logStr)
         if useCache{
             cache.append(logStr)
