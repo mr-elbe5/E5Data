@@ -8,6 +8,8 @@ import Foundation
 
 extension Date{
     
+    public static var utcZone = TimeZone(abbreviation: "UTC")
+    
     public static var localDate: Date{
         get{
             Date().toLocalDate()
@@ -100,21 +102,21 @@ public class DateFormats{
     
     public static var simpleDateFormatter : DateFormatter{
             let dateFormatter = DateFormatter()
-            dateFormatter.timeZone = .none
+        dateFormatter.timeZone = Date.utcZone
             dateFormatter.dateFormat = "yyyy-MM-dd"
             return dateFormatter
         }
     
     public static var fileDateFormatter : DateFormatter{
         let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = .none
+        dateFormatter.timeZone = Date.utcZone
         dateFormatter.dateFormat = "yyyyMMddHHmmss"
         return dateFormatter
     }
     
     public static var shortFileDateFormatter : DateFormatter{
         let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = .none
+        dateFormatter.timeZone = Date.utcZone
         dateFormatter.dateFormat = "yyyy-MM-dd_HH-mm"
         return dateFormatter
     }
@@ -127,21 +129,21 @@ public class DateFormats{
     
     public static var exifDateFormatter : DateFormatter{
         let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = .none
+        dateFormatter.timeZone = Date.utcZone
         dateFormatter.dateFormat = "yyyy:MM:dd HH:mm:ss"
         return dateFormatter
     }
     
     public static var iptcDateFormatter : DateFormatter{
         let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = .none
+        dateFormatter.timeZone = Date.utcZone
         dateFormatter.dateFormat = "yyyyMMdd"
         return dateFormatter
     }
     
     public static var iptcTimeFormatter : DateFormatter{
         let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = .none
+        dateFormatter.timeZone = Date.utcZone
         dateFormatter.dateFormat = "HHmmss"
         return dateFormatter
     }
